@@ -2,6 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import "./Components/TestComponent";
+import { BrowserRouter } from "react-router-dom";
+import { IntlProvider, addLocaleData, FormattedMessage } from "react-intl";
+//import en from "react-intl/locale-data/en";
+//import es from "react-intl/locale-data/es";
+import localeData from "./../build/locales/data.json";
+
+//addLocaleData([...en, ...es]);
 
 class Square extends React.Component {
   render() {
@@ -91,7 +98,7 @@ class Game extends React.Component {
           <Board squares={current.squares} onClick={i => this.handleClick(i)} />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div><FormattedMessage id="Game.Winner" defaultMessage={status}></FormattedMessage></div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
@@ -100,8 +107,27 @@ class Game extends React.Component {
 }
 
 // ========================================
+// Define user's language. Different browsers have the user locale defined
+// on different fields on the `navigator` object, so we make sure to account
+// for these different by checking all of them
+const language =
+  (navigator.languages && navigator.languages[0]) ||
+  navigator.language ||
+  navigator.userLanguage;
 
-ReactDOM.render(<Game />, document.getElementById("root"));
+// Split locales with a region code
+const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
+
+// Try full locale, try locale without region code, fallback to 'en'
+const messages =
+  localeData[languageWithoutRegionCode] ||
+  localeData[language] ||
+  localeData.en;
+
+ReactDOM.render(
+  <IntlProvider locale={language} messages={messages}>
+    <Game />
+  </IntlProvider>, document.getElementById("root"));
 
 function calculateWinner(squares) {
   const lines = [
