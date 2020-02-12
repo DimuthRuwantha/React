@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "./Components/TestComponent";
 import { BrowserRouter } from "react-router-dom";
-import { IntlProvider, addLocaleData, FormattedMessage } from "react-intl";
+import { IntlProvider, FormattedMessage } from "react-intl";
 //import en from "react-intl/locale-data/en";
 //import es from "react-intl/locale-data/es";
 import localeData from "./../build/locales/data.json";
@@ -98,7 +98,7 @@ class Game extends React.Component {
           <Board squares={current.squares} onClick={i => this.handleClick(i)} />
         </div>
         <div className="game-info">
-          <div><FormattedMessage id="Game.Winner" defaultMessage={status}></FormattedMessage></div>
+          <div><FormattedMessage id="Game.Winner" defaultMessage="">rthg</FormattedMessage></div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
